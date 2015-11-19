@@ -324,7 +324,14 @@ private extension CVCalendarView {
         if let delegate = delegate {
             calendarMode = delegate.presentationMode()
             switch delegate.presentationMode() {
-                case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
+                case .MonthView:
+                    if let date = self.presentedDate?.convertedDate() {
+                        // if presentedDate exist set month for it
+                        contentController = MonthContentViewController(calendarView: self, frame: bounds, presentedDate: date);
+                    } else {
+                        // if not then set it as defauls - for now
+                        contentController = MonthContentViewController(calendarView: self, frame: bounds)
+                    }
                 case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
             }
             
